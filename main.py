@@ -3,6 +3,10 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import tempfile
 import os.path
+
+root_dir = ""
+pagenation = "/p=2&o=n"
+depth = 10
 # todo:pagenation 巡回済みurlの管理　投稿者情報の取得と動画の紐づけ
 # seleniumの設定
 
@@ -17,23 +21,42 @@ driver = webdriver.Remote(
     options=options,
 )
 
-# Xtube日本人女装子動画からurlを抽出
-html = get("http://xtube.akicompany.com/").text
-html = BeautifulSoup(html)
+urls = []
+for i in range(depth):
+    pagenation = "/p=" + str(i + 1) + "&o=n"
+    # Xtube日本人女装子動画からurlを抽出
+    html = get("http://xtube.akicompany.com/" + pagenation).text
+    html = BeautifulSoup(html)
 
-target = html.find_all("div", class_="card-body")
+    target = html.find_all("div", class_="card-body")
 
-urls = [x.a.get("href") for x in target if "PR" not in x.a.text] # 広告を除外
+    [urls.append(x.a.get("href")) for x in target if "PR" not in x.a.text] # 広告を除外
+
+print(len(urls))
 
 # 抽出したurlから動画を保存
 
 for url in urls:
+    with open("url_list.txt", "r") as f:
+        url_list = f.readlines()
+        url_list = [x.strip() for x in url_list]
+    if url in url_list:
+        continue
     driver.get(url)
     html = BeautifulSoup(driver.page_source, 'html.parser')
+    # 投稿者の名前を取得
+    user_info = html.find("a", class_="profileUsername nickname js-pop")
+    user_name = user_info.text.strip()
+    # 動画のダウンロード
     video_url = html.find("source", type="video/mp4").get("src")
     res = get(video_url)
     _, tmp = tempfile.mkstemp(suffix=".mp4")
-    file_name = os.path.basename(tmp)
+    save_dir = root_dir + user_name
+    if not os.path.exists(save_dir):
+        os.mkdir(save_dir)
+    file_name = save_dir + "/" + os.path.basename(tmp)
     with open(file_name, "wb") as fo:
         fo.write(res.content)
+    with open("url_list.txt", "a") as f:
+        print(url, file=f)
 driver.quit()
