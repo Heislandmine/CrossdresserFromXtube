@@ -4,8 +4,9 @@ from selenium import webdriver
 import tempfile
 import os.path
 
-root_dir = "/mnt/g/data/R_Media/xtube/"
-depth = 5
+# 設定
+root_dir = "/mnt/g/data/R_Media/xtube/"  # todo: config fileから読むようにする
+depth = 5 # 起動オプションで指定できるようにする
 # todo:pagenation 巡回済みurlの管理　投稿者情報の取得と動画の紐づけ
 # seleniumの設定
 
