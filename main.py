@@ -7,8 +7,8 @@ import os.path
 # 設定
 root_dir = "/mnt/g/data/R_Media/xtube/"  # todo: config fileから読むようにする
 depth = 5 # 起動オプションで指定できるようにする
-# todo:pagenation 巡回済みurlの管理　投稿者情報の取得と動画の紐づけ
-# seleniumの設定
+
+# seleniumの設定 # todo: 外だし
 
 # Chrome のオプションを設定する
 options = webdriver.ChromeOptions()
