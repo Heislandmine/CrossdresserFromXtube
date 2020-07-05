@@ -3,3 +3,4 @@ Pipfile.lock
 *.mp4
 url_list.txt
 url_list.org.txt
+skip_urls.txt
