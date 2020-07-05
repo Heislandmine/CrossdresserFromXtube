@@ -1,12 +1,14 @@
 from selenium import webdriver
+from url_extractor import Akicompany
+from downloader import XtubeDownloader
 import os.path
 
 class Client:
-    def __init__(self):
+    def __init__(self, root_dir):
        self.visited_urls = self._set_visited_urls()
        self.driver = self._set_driver()
        self.extractor = self._set_extractor()
-       self.downlader = self._set_downlader()
+       self.downlader = self._set_downlader(root_dir)
 
     def _set_visited_urls(self):
         if os.path.exists("url_list.txt"):
@@ -31,7 +33,10 @@ class Client:
         return driver
 
     def _set_extractor(self):
-        pass
+        return Akicompany()
 
-    def _set_downlader(self):
-        pass
+    def _set_downlader(self, root_dir):
+        return XtubeDownloader(root_dir)
+
+    def isVisited(self, url):
+        return url in self.visited_urls
