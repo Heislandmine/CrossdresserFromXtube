@@ -18,3 +18,23 @@ class Akicompany:
         print(len(urls)) # デバック用
 
         return urls
+
+class ProfileVideo:
+    def __init__(self):
+        self.url = "https://www.xtube.com"
+
+    def extract_urls(self, driver, url, depth=1):
+        urls = []
+
+        driver.get(url)
+        html = BeautifulSoup(driver.page_source, 'html.parser')
+        try:
+            target_ul = html.find("ul", class_="row rowSpace")
+            targets = target_ul.find_all("a", class_="titleRemover")
+        except AttributeError: # なぜかhtmlがNoneになる場合があるのでその場合はurlを記録してメソッドを抜ける
+            with open("skip_urls.txt", "w") as f:
+                print(url, file=f)
+            return False
+        for target in targets:
+            urls.append(self.url + target.get("href"))
+        return urls

@@ -25,7 +25,7 @@ class XtubeDownloader:
             file_name = save_dir + "/" + os.path.basename(tmp)
             with open(file_name, "wb") as fo:
                 fo.write(res.content)
-            with open("url_list.txt", "a") as f:
+            with open("url_list.txt", "a") as f: # このクラスで処理するのが適正か？？？
                 print(url, file=f)
         driver.close
 

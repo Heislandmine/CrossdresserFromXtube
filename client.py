@@ -1,5 +1,5 @@
 from selenium import webdriver
-from url_extractor import Akicompany
+from url_extractor import Akicompany, ProfileVideo
 from downloader import XtubeDownloader
 import os.path
 
@@ -40,3 +40,10 @@ class Client:
 
     def isVisited(self, url):
         return url in self.visited_urls
+
+class ClientProfileVideo(Client):
+    def __init__(self, root_dir):
+        super().__init__(root_dir)
+
+    def _set_extractor(self):
+        return ProfileVideo()
