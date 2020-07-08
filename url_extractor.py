@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from requests import get
+import time
 
 class Akicompany:
     def __init__(self):
@@ -32,8 +33,9 @@ class ProfileVideo:
             target_ul = html.find("ul", class_="row rowSpace")
             targets = target_ul.find_all("a", class_="titleRemover")
         except AttributeError: # なぜかhtmlがNoneになる場合があるのでその場合はurlを記録してメソッドを抜ける
-            with open("skip_urls.txt", "w") as f:
+            with open("retry_urls.txt", "a") as f:
                 print(url, file=f)
+            print("html取得失敗:{}".format(url))
             return False
         for target in targets:
             urls.append(self.url + target.get("href"))
