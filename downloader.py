@@ -3,6 +3,12 @@ import os.path
 import tempfile
 from requests import get
 from bs4 import BeautifulSoup
+
+
+class FailedGetVideoPageError(Exception):
+    pass
+
+
 class XtubeDownloader:
     def __init__(self, root_dir):
         self.root_dir = root_dir
@@ -25,13 +31,16 @@ class XtubeDownloader:
 
         return user_name
 
-    def _get_html(self, driver, url):
+    def _get_html(driver, url):
         driver.get(url)
         html = BeautifulSoup(driver.page_source, 'html.parser')
 
+        if not html:
+            raise FailedGetVideoPageError("failed to get video page")
+
         return html
 
-    def _get_video_url(self, html):
+    def _get_video_url(html):
         source = html.find("source", type="video/mp4")
         video_url = source.get("src")
         return video_url
