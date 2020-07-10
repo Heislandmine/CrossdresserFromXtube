@@ -9,6 +9,10 @@ class FailedGetVideoPageError(Exception):
     pass
 
 
+class FailedGetVideoUrlError(Exception):
+    pass
+
+
 class Downloader:
     def _save_content(self, content, save_path):
         with open(save_path, "wb") as fo:
@@ -54,6 +58,8 @@ class XtubeDownloader(Downloader):
 
     def _get_video_url(self, html):
         source = html.find("source", type="video/mp4")
+        if not source:
+            raise FailedGetVideoUrlError("failed to get video url")
         video_url = source.get("src")
         return video_url
 
