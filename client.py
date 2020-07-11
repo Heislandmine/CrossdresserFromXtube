@@ -3,12 +3,13 @@ from url_extractor import Akicompany, ProfileVideo
 from downloader import XtubeDownloader
 import os.path
 
+
 class Client:
     def __init__(self, root_dir):
-       self.visited_urls = self._set_visited_urls()
-       self.driver = self._set_driver()
-       self.extractor = self._set_extractor()
-       self.downlader = self._set_downlader(root_dir)
+        self.visited_urls = self._set_visited_urls()
+        self.driver = self._set_driver()
+        self.extractor = self._set_extractor()
+        self.downlader = self._set_downlader(root_dir)
 
     def _set_visited_urls(self):
         if os.path.exists("url_list.txt"):
@@ -22,11 +23,11 @@ class Client:
 
     def _set_driver(self):
         options = webdriver.ChromeOptions()
-        options.add_argument('--headless')
+        options.add_argument("--headless")
 
         # Selenium Server に接続する
         driver = webdriver.Remote(
-            command_executor='http://localhost:4444/wd/hub',
+            command_executor="http://localhost:4444/wd/hub",
             desired_capabilities=options.to_capabilities(),
             options=options,
         )
@@ -40,6 +41,7 @@ class Client:
 
     def isVisited(self, url):
         return url in self.visited_urls
+
 
 class ClientProfileVideo(Client):
     def __init__(self, root_dir):

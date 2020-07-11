@@ -6,17 +6,17 @@ import os.path
 
 # 設定
 root_dir = "/mnt/g/data/R_Media/xtube/"  # todo: config fileから読むようにする
-depth = 5 # 起動オプションで指定できるようにする
+depth = 5  # 起動オプションで指定できるようにする
 
 # seleniumの設定 # todo: 外だし
 
 # Chrome のオプションを設定する
 options = webdriver.ChromeOptions()
-options.add_argument('--headless')
+options.add_argument("--headless")
 
 # Selenium Server に接続する
 driver = webdriver.Remote(
-    command_executor='http://localhost:4444/wd/hub',
+    command_executor="http://localhost:4444/wd/hub",
     desired_capabilities=options.to_capabilities(),
     options=options,
 )
@@ -31,7 +31,7 @@ for i in range(depth):
 
     target = html.find_all("div", class_="card-body")
 
-    [urls.append(x.a.get("href")) for x in target if "PR" not in x.a.text] # 広告を除外
+    [urls.append(x.a.get("href")) for x in target if "PR" not in x.a.text]  # 広告を除外
     print(len(urls))
 
     # 抽出したurlから動画を保存
@@ -44,7 +44,7 @@ for i in range(depth):
         if url in url_list:
             continue
         driver.get(url)
-        html = BeautifulSoup(driver.page_source, 'html.parser')
+        html = BeautifulSoup(driver.page_source, "html.parser")
         # 投稿者の名前を取得
         user_info = html.find("a", class_="profileUsername nickname js-pop")
         user_name = user_info.text.strip()
