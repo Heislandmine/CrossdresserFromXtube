@@ -88,10 +88,6 @@ class XtubeDownloader(Downloader):
 
         return save_path
 
-    def _save_visited_list(self):
-        with open("url_list.txt", "a") as f:  # このクラスで処理するのが適正か？？？
-            print(url, file=f)
-
     def _print_start_download(self, url):
         print("ダウンロード開始:{}".format(url))
 
