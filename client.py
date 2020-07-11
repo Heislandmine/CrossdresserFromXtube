@@ -37,7 +37,7 @@ class Client:
         )
         return driver
 
-    def isVisited(self, url):
+    def _isVisited(self, url):
         visited_urls = self._get_visited_urls()
         return url in visited_urls
 
