@@ -20,23 +20,27 @@ class Client:
         return url_list
 
     def _write_visited_url(self, url):
-        with open("url_list.txt", "a") as f:
+        with open("visited_list.txt", "a") as f:
             print(url, file=f)
 
     def _isVisited(self, url):
         visited_urls = self._get_visited_urls()
         return url in visited_urls
 
-    def run(self, **kwargs):
+    def run(self, check_visited=True, **kwargs):
         urls = self.extractor.extract_urls(
             kwargs["depth"]
         )  # モジュールの違いを吸収するために別メソッドでラッピングすること
 
         for url in urls:
-            self.logger.logging("ダウンロード開始:{}".format(url))
-            self.downlader.download_video(url, self.driver)
-            self._write_visited_url(url)
-            self.logger.logging("ダウンロード完了:{}".format(url))
+            if check_visited:
+                if not self._isVisited(url):
+                    self.logger.logging("ダウンロード開始:{}".format(url))
+                    self.downlader.download_video(url, self.driver)
+                    self._write_visited_url(url)
+                    self.logger.logging("ダウンロード完了:{}".format(url))
+                else:
+                    self.logger.logging("訪問済み:{}".format(url))
 
 
 class ClientProfileVideo(Client):
