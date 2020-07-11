@@ -22,7 +22,7 @@ class Client:
         return url_list
 
     def _write_visited_url(self, url):
-        with open("url_list.txt", "a") as f:  # このクラスで処理するのが適正か？？？
+        with open("url_list.txt", "a") as f:
             print(url, file=f)
 
     def _set_driver(self):

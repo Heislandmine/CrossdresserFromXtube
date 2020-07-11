@@ -93,4 +93,3 @@ class XtubeDownloader(Downloader):
 
     def _print_end_download(self, url):
         print("ダウンロード完了:{}".format(url))
-
