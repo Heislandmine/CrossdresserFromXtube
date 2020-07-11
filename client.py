@@ -1,4 +1,3 @@
-from selenium import webdriver
 from url_extractor import ProfileVideo
 import os.path
 
@@ -24,18 +23,6 @@ class Client:
         with open("url_list.txt", "a") as f:
             print(url, file=f)
 
-    def _set_driver(self):
-        options = webdriver.ChromeOptions()
-        options.add_argument("--headless")
-
-        # Selenium Server に接続する
-        driver = webdriver.Remote(
-            command_executor="http://localhost:4444/wd/hub",
-            desired_capabilities=options.to_capabilities(),
-            options=options,
-        )
-        return driver
-
     def _isVisited(self, url):
         visited_urls = self._get_visited_urls()
         return url in visited_urls
@@ -49,7 +36,7 @@ class Client:
             self.logger.logging("ダウンロード開始:{}".format(url))
             self.downlader.download_video(url, self.driver)
             self._write_visited_url(url)
-            self.logger.logging("ダウンロード開始:{}".format(url))
+            self.logger.logging("ダウンロード完了:{}".format(url))
 
 
 class ClientProfileVideo(Client):
