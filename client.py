@@ -5,15 +5,15 @@ import os.path
 
 
 class Client:
-    def __init__(self, driver, extractor, downlader):
-        self.visited_urls = self._set_visited_urls()
+    def __init__(self, driver, extractor, downlader, logger):
         self.driver = driver
         self.extractor = extractor
         self.downlader = downlader
+        self.logger = logger
 
-    def _set_visited_urls(self):
-        if os.path.exists("url_list.txt"):
-            with open("url_list.txt", "r") as f:
+    def _get_visited_urls(self):
+        if os.path.exists("visited_list.txt"):
+            with open("visited_list.txt", "r") as f:
                 url_list = f.readlines()
             url_list = [x.strip() for x in url_list]
         else:
@@ -34,7 +34,8 @@ class Client:
         return driver
 
     def isVisited(self, url):
-        return url in self.visited_urls
+        visited_urls = self._get_visited_urls()
+        return url in visited_urls
 
 
 class ClientProfileVideo(Client):
