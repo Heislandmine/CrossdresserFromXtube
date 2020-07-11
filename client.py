@@ -5,11 +5,11 @@ import os.path
 
 
 class Client:
-    def __init__(self, root_dir):
+    def __init__(self, driver, extractor, downlader):
         self.visited_urls = self._set_visited_urls()
-        self.driver = self._set_driver()
-        self.extractor = self._set_extractor()
-        self.downlader = self._set_downlader(root_dir)
+        self.driver = driver
+        self.extractor = extractor
+        self.downlader = downlader
 
     def _set_visited_urls(self):
         if os.path.exists("url_list.txt"):
@@ -32,12 +32,6 @@ class Client:
             options=options,
         )
         return driver
-
-    def _set_extractor(self):
-        return Akicompany()
-
-    def _set_downlader(self, root_dir):
-        return XtubeDownloader(root_dir)
 
     def isVisited(self, url):
         return url in self.visited_urls
