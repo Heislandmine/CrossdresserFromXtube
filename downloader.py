@@ -30,16 +30,12 @@ class XtubeDownloader(Downloader):
         user_name = self._get_user_name(html)
         # 動画のURLを抽出
         video_url = self._get_video_url(html)
-        # 開始メッセージ
-        self._print_start_download(url)
         # コンテンツを取得
         res = get(video_url)
         # 保存先を取得
         save_path = self.get_save_path(user_name)
         # 保存
         self._save_content(res.content, save_path)
-        # 終了メッセージ
-        self._print_end_download(url)
 
     def _get_user_name(self, html):
         user_info = html.find("a", class_="profileUsername nickname js-pop")
@@ -87,9 +83,3 @@ class XtubeDownloader(Downloader):
             os.mkdir(save_dir)
 
         return save_path
-
-    def _print_start_download(self, url):
-        print("ダウンロード開始:{}".format(url))
-
-    def _print_end_download(self, url):
-        print("ダウンロード完了:{}".format(url))
